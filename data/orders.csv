@@ -1,0 +1,6 @@
+order_id,date,customer_name,customer_phone,product_name,quantity,unit_price,status
+1001,2026-08-08,Sara,70123456,Red Rose Bouquet,2,25,Delivered
+1002,2026-08-08,Ahmad,71123456,White Rose Bouquet,1,30,Pending
+1003,2026-08-08,Lina,76123456,Red Rose Bouquet,1,25,Confirmed
+1004,2026-08-07,Omar,03123456,Chocolate Bouquet,2,35,Delivered
+1005,2026-08-07,Sara,70123456,White Rose Bouquet,1,30,Delivered
