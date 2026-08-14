@@ -29,4 +29,4 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           GOOGLE_SHEET_URL: ${{ secrets.GOOGLE_SHEET_URL }}
         run: |
-          python etl/run_pipeline.py
+          python -m etl.run_pipeline
