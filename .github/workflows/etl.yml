@@ -38,3 +38,11 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           python -m reports.daily_report
+
+      - name: Notify ETL failure
+        if: failure()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python -c "from reports.etl_failure import send_failure_notification; send_failure_notification('GitHub Actions ETL workflow failed. Check the workflow logs.')"
