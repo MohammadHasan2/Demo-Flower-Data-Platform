@@ -32,6 +32,35 @@ def validate_orders(df: pd.DataFrame) -> pd.DataFrame:
             f"Missing required columns: {missing_columns}"
         )
 
+    # ---------------------------------------------------------
+    # Convert numeric columns explicitly
+    # ---------------------------------------------------------
+    df["quantity"] = pd.to_numeric(
+        df["quantity"],
+        errors="coerce"
+    )
+
+    df["unit_price"] = pd.to_numeric(
+        df["unit_price"],
+        errors="coerce"
+    )
+
+    # ---------------------------------------------------------
+    # Check for invalid numeric values
+    # ---------------------------------------------------------
+    if df["quantity"].isna().any():
+        raise ValueError(
+            "Quantity contains missing or invalid numeric values."
+        )
+
+    if df["unit_price"].isna().any():
+        raise ValueError(
+            "Unit price contains missing or invalid numeric values."
+        )
+
+    # ---------------------------------------------------------
+    # Validate duplicate order IDs
+    # ---------------------------------------------------------
     if df["order_id"].duplicated().any():
         duplicates = df.loc[
             df["order_id"].duplicated(),
@@ -42,16 +71,25 @@ def validate_orders(df: pd.DataFrame) -> pd.DataFrame:
             f"Duplicate order IDs found: {duplicates}"
         )
 
+    # ---------------------------------------------------------
+    # Validate quantity
+    # ---------------------------------------------------------
     if (df["quantity"] <= 0).any():
         raise ValueError(
             "Quantity must be greater than zero."
         )
 
+    # ---------------------------------------------------------
+    # Validate unit price
+    # ---------------------------------------------------------
     if (df["unit_price"] < 0).any():
         raise ValueError(
             "Unit price cannot be negative."
         )
 
+    # ---------------------------------------------------------
+    # Validate statuses
+    # ---------------------------------------------------------
     invalid_statuses = set(df["status"]) - VALID_STATUSES
 
     if invalid_statuses:
@@ -59,6 +97,9 @@ def validate_orders(df: pd.DataFrame) -> pd.DataFrame:
             f"Invalid statuses: {invalid_statuses}"
         )
 
+    # ---------------------------------------------------------
+    # Validate required text fields
+    # ---------------------------------------------------------
     if df["customer_name"].isna().any():
         raise ValueError(
             "Customer name cannot be empty."
